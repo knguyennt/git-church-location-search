@@ -1,8 +1,9 @@
 -- Enable PostGIS extension
 CREATE EXTENSION IF NOT EXISTS postgis;
 
--- Create metabase database for Metabase's internal data
-CREATE DATABASE metabase;
+-- Create metabase database for Metabase's internal data (only if it doesn't exist)
+SELECT 'CREATE DATABASE metabase'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'metabase')\gexec
 
 -- Create churches table
 CREATE TABLE IF NOT EXISTS churches (
@@ -65,7 +66,7 @@ CREATE OR REPLACE VIEW denomination_stats AS
 SELECT 
     COALESCE(denomination, 'Unknown') as denomination,
     COUNT(*) as church_count,
-    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) as percentage
+    COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () as percentage
 FROM churches 
 GROUP BY denomination
 ORDER BY church_count DESC;
@@ -79,8 +80,8 @@ SELECT
         ELSE 'South Vietnam'
     END as region,
     COUNT(*) as church_count,
-    ROUND(AVG(ST_X(location)), 4) as avg_longitude,
-    ROUND(AVG(ST_Y(location)), 4) as avg_latitude
+    AVG(ST_X(location)) as avg_longitude,
+    AVG(ST_Y(location)) as avg_latitude
 FROM churches
 GROUP BY 
     CASE 
@@ -139,8 +140,8 @@ WITH church_pairs AS (
     )
 )
 SELECT 
-    ROUND(distance_km, 1) as distance_range_km,
+    ROUND(distance_km::numeric, 1) as distance_range_km,
     COUNT(*) as church_pairs_count
 FROM church_pairs
-GROUP BY ROUND(distance_km, 1)
+GROUP BY ROUND(distance_km::numeric, 1)
 ORDER BY distance_range_km;

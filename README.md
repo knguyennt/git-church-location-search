@@ -48,21 +48,27 @@ A full-stack GIS application for finding and managing church locations with inte
 
 2. **Start the application**
    ```bash
-   docker-compose up --build
+   # Using the automated setup script (recommended)
+   ./setup.sh
+   
+   # Or manually with Docker Compose
+   docker compose up --build -d
    ```
 
-3. **Import existing data** (optional)
-   ```bash
-   # Copy data to backend and import
-   cp data.json backend/
-   docker-compose exec backend python import_data.py
-   ```
+   The setup script will:
+   - ✅ Check Docker installation
+   - 🔨 Build and start all services
+   - 📊 Automatically import church data (if database is empty)
+   - 🔍 Verify all services are running
+   - 📈 Set up analytics views in the database
 
-4. **Access the application**
+3. **Access the application**
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
    - Metabase Analytics: http://localhost:3001
+
+> **Note**: Data import happens automatically when starting with an empty database. The system includes 269+ church locations from Vietnam.
 
 ## API Endpoints
 
