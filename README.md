@@ -11,6 +11,7 @@ A full-stack GIS application for finding and managing church locations with inte
 - ✏️ **Edit Churches**: Update church information including location, contact details, and description
 - 🗑️ **Delete Churches**: Remove church entries from the database
 - 🌍 **PostGIS Integration**: Efficient spatial queries using PostGIS database extension
+- 📊 **Analytics Dashboard**: Metabase integration for data visualization and insights
 
 ## Technology Stack
 
@@ -29,6 +30,7 @@ A full-stack GIS application for finding and managing church locations with inte
 ### Infrastructure
 - **Docker**: Containerized deployment
 - **Docker Compose**: Multi-service orchestration
+- **Metabase**: Business intelligence and data visualization
 
 ## Quick Start
 
@@ -60,6 +62,7 @@ A full-stack GIS application for finding and managing church locations with inte
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
+   - Metabase Analytics: http://localhost:3001
 
 ## API Endpoints
 
@@ -103,6 +106,34 @@ The PostgreSQL database includes:
 - PostGIS extension for spatial operations
 - Spatial indexes for efficient proximity queries
 - Automatic timestamp management
+
+## Metabase Analytics
+
+### Setup Metabase
+1. Access Metabase at http://localhost:3001
+2. Create admin account on first visit
+3. Add database connection:
+   - **Database type**: PostgreSQL
+   - **Host**: `db`
+   - **Port**: `5432`
+   - **Database**: `church_locator`
+   - **Username**: `postgres`
+   - **Password**: `postgres`
+
+### Pre-built Analytics Views
+- `churches_analytics` - Complete church data with coordinates
+- `denomination_stats` - Statistical breakdown by denomination
+- `churches_by_region` - Geographic distribution analysis
+- `church_additions_by_month` - Growth tracking over time
+- `church_density_analysis` - Spatial distribution insights
+
+### Suggested Dashboards
+- **Geographic Distribution**: Maps and regional analysis
+- **Denominational Insights**: Religious distribution and trends
+- **Growth Analytics**: Church additions and expansion patterns
+- **Density Analysis**: Coverage and proximity metrics
+
+See `metabase/README.md` for detailed setup instructions and example queries.
 
 ## Development
 

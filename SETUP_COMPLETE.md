@@ -31,6 +31,12 @@ I've created a complete full-stack GIS application for church location search wi
 - Development-ready containers
 - Volume persistence for data
 
+### 📊 **Analytics Dashboard (Metabase)**
+- Business intelligence and data visualization
+- Pre-built analytical views for church data
+- Interactive dashboards and charts
+- Geographic and denominational insights
+
 ## 🎯 **Key Features Implemented**
 
 ✅ **Interactive Map** - Churches displayed as clickable markers  
@@ -40,6 +46,7 @@ I've created a complete full-stack GIS application for church location search wi
 ✅ **Proximity Search** - Find churches within specified radius  
 ✅ **PostGIS Integration** - Efficient spatial queries  
 ✅ **Data Import** - Import from your existing data.json  
+✅ **Analytics Dashboard** - Metabase for data visualization and insights  
 
 ## 🚀 **Quick Start**
 
@@ -74,6 +81,7 @@ The application includes a data import script that will automatically load your 
 - **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:8000  
 - **API Documentation**: http://localhost:8000/docs
+- **Metabase Analytics**: http://localhost:3001
 - **Database**: localhost:5432 (postgres/postgres)
 
 ## 📁 **Project Structure**
@@ -101,6 +109,8 @@ gis-church-location-search/
 │   └── Dockerfile
 ├── database/
 │   └── init.sql             # Database initialization
+├── metabase/
+│   └── README.md            # Analytics setup and documentation
 ├── docker-compose.yml       # Multi-service setup
 ├── data.json               # Your church data
 └── README.md               # Detailed documentation
@@ -122,6 +132,24 @@ gis-church-location-search/
 - Click church markers to view details
 - Use "Edit" button to modify information
 - Delete churches when needed
+
+### Analytics Dashboard (Metabase)
+1. **Access**: http://localhost:3001
+2. **Setup**: Create admin account on first visit
+3. **Connect Database**:
+   - Database type: PostgreSQL
+   - Host: `db`, Port: `5432`
+   - Database: `church_locator`
+   - Username: `postgres`, Password: `postgres`
+4. **Explore Data**: Use pre-built views for analysis
+5. **Create Dashboards**: Build custom charts and reports
+
+### Pre-built Analytics Views
+- **churches_analytics** - Complete data with coordinates
+- **denomination_stats** - Religious distribution statistics  
+- **churches_by_region** - Geographic analysis by Vietnamese regions
+- **church_additions_by_month** - Growth tracking over time
+- **church_density_analysis** - Spatial distribution insights
 
 ## 🛠️ **Technical Highlights**
 

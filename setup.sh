@@ -1,8 +1,45 @@
 #!/bin/bash
 
-echo "🏗️  Setting up Church Locator Application..."
+echo "🏗️  Setting up Church Locator A# Check if frontend is running
+echo "🔍 Checking frontend..."
+max_attempts=30
+attempt=1
 
-# Check if Docker is running
+while [ $attempt -le $max_attempts ]; do
+    if curl -s http://localhost:3000 > /dev/null 2>&1; then
+        echo "✅ Frontend is ready!"
+        break
+    fi
+    
+    echo "⏳ Waiting for frontend... (attempt $attempt/$max_attempts)"
+    sleep 2
+    attempt=$((attempt + 1))
+done
+
+if [ $attempt -gt $max_attempts ]; then
+    echo "❌ Frontend failed to start. Please check the logs with: $COMPOSE_CMD logs frontend"
+    exit 1
+fi
+
+# Check if Metabase is running
+echo "🔍 Checking Metabase..."
+max_attempts=60  # Metabase takes longer to start
+attempt=1
+
+while [ $attempt -le $max_attempts ]; do
+    if curl -s http://localhost:3001/api/health > /dev/null 2>&1; then
+        echo "✅ Metabase is ready!"
+        break
+    fi
+    
+    echo "⏳ Waiting for Metabase... (attempt $attempt/$max_attempts)"
+    sleep 3
+    attempt=$((attempt + 1))
+done
+
+if [ $attempt -gt $max_attempts ]; then
+    echo "⚠️ Metabase may still be starting up. Check status with: $COMPOSE_CMD logs metabase"
+fieck if Docker is running
 if ! docker info > /dev/null 2>&1; then
     echo "❌ Docker is not running. Please start Docker and try again."
     exit 1
@@ -92,6 +129,7 @@ echo "🌐 Application URLs:"
 echo "   Frontend: http://localhost:3000"
 echo "   Backend API: http://localhost:8000"
 echo "   API Documentation: http://localhost:8000/docs"
+echo "   Metabase Analytics: http://localhost:3001"
 echo ""
 echo "🔧 Useful commands:"
 echo "   Stop services: $COMPOSE_CMD down"
