@@ -21,6 +21,7 @@ import {
 import ChurchMap from './components/ChurchMap';
 import Search from './components/Search';
 import ChurchModal from './components/ChurchModal';
+import NearbyChurchesList from './components/NearbyChurchesList';
 import { churchService } from './services/api';
 
 function App() {
@@ -71,6 +72,18 @@ function App() {
   };
 
   const handleChurchSelect = (church) => {
+    setSelectedChurch(church);
+  };
+
+  const handleNearbyChurchClick = (church) => {
+    // Center map on the selected church
+    if (church.latitude && church.longitude) {
+      setCenterLocation({
+        lat: church.latitude,
+        lng: church.longitude
+      });
+    }
+    // Also select the church to show its popup
     setSelectedChurch(church);
   };
 
@@ -176,6 +189,18 @@ function App() {
                       </Text>
                     )}
                   </VStack>
+                </Box>
+              )}
+
+              {/* Nearby Churches List - only for proximity search */}
+              {searchType === 'proximity' && searchResults.length > 0 && (
+                <Box p={4} bg="white" borderRadius="md" shadow="md">
+                  <NearbyChurchesList
+                    churches={searchResults}
+                    onChurchClick={handleNearbyChurchClick}
+                    selectedChurch={selectedChurch}
+                    searchCenter={centerLocation}
+                  />
                 </Box>
               )}
 

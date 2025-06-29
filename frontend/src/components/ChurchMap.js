@@ -59,6 +59,41 @@ function MapController({ center }) {
   return null;
 }
 
+// Component to handle automatic popup opening for selected church
+function PopupController({ selectedChurch, churches }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (selectedChurch && churches.length > 0) {
+      // Find the church in the current churches list
+      const church = churches.find(c => c.id === selectedChurch.id);
+      if (church && church.latitude && church.longitude) {
+        // Close all existing popups first
+        map.eachLayer((layer) => {
+          if (layer instanceof L.Marker) {
+            layer.closePopup();
+          }
+        });
+        
+        // Find the marker for this church and open its popup
+        setTimeout(() => {
+          map.eachLayer((layer) => {
+            if (layer instanceof L.Marker) {
+              const latlng = layer.getLatLng();
+              if (Math.abs(latlng.lat - church.latitude) < 0.0001 && 
+                  Math.abs(latlng.lng - church.longitude) < 0.0001) {
+                layer.openPopup();
+              }
+            }
+          });
+        }, 100);
+      }
+    }
+  }, [selectedChurch, churches, map]);
+
+  return null;
+}
+
 const ChurchMap = ({ 
   churches = [], 
   onChurchSelect, 
@@ -111,6 +146,7 @@ const ChurchMap = ({
         
         <MapClickHandler onMapClick={handleMapClick} isAddingMode={isAddingMode} />
         <MapController center={centerLocation} />
+        <PopupController selectedChurch={selectedChurch} churches={churches} />
         
         {churches.map((church) => (
           <Marker
